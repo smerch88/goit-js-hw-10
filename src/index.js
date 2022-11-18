@@ -1,7 +1,7 @@
 import createCountryCard from "./templates/productCard.hbs";
 import create10Cards from "./templates/1to10.hbs";
 import { ApiServices } from "./js/fetchCountries.js";
-var debounce = require("lodash.debounce");
+import { debounce } from "lodash";
 import Notiflix from "notiflix";
 
 const listEl = document.querySelector(".country-list");
@@ -11,7 +11,6 @@ const apiServices = new ApiServices();
 
 const searchData = (event) => {
   event.preventDefault();
-  debounce(function () {}, 300);
 
   apiServices.country = event.currentTarget.value;
 
