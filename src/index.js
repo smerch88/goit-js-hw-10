@@ -5,6 +5,7 @@ import { debounce } from "lodash";
 import Notiflix from "notiflix";
 
 const listEl = document.querySelector(".country-list");
+const infoEl = document.querySelector(".country-info");
 const formRef = document.querySelector("#search-box");
 
 const apiServices = new ApiServices();
@@ -12,7 +13,7 @@ const apiServices = new ApiServices();
 const searchData = (event) => {
   event.preventDefault();
 
-  apiServices.country = event.currentTarget.value;
+  apiServices.country = event.target.value.trim();
 
   apiServices
     .getProducts()
@@ -30,14 +31,17 @@ function renderProducts(countries) {
   let cards;
   if (countries.length === 1) {
     cards = createCountryCard(countries);
+    listEl.innerHTML = cards;
+    infoEl.innerHTML = "";
   } else if (countries.length > 1 && countries.length <= 10) {
     cards = create10Cards(countries);
+    infoEl.innerHTML = cards;
+    listEl.innerHTML = "";
   } else if (countries.length > 10) {
     return Notiflix.Notify.info(
       "Too many matches found. Please enter a more specific name."
     );
   }
-  listEl.innerHTML = cards;
 }
 
-formRef.addEventListener("input", searchData);
+formRef.addEventListener("input", debounce(searchData, 300));
